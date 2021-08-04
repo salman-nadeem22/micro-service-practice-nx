@@ -1,0 +1,59 @@
+{
+  "version": 2,
+  "projects": {
+    "micro-service": {
+      "root": "apps/micro-service",
+      "sourceRoot": "apps/micro-service/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/micro-service",
+            "main": "apps/micro-service/src/main.ts",
+            "tsConfig": "apps/micro-service/tsconfig.app.json",
+            "assets": ["apps/micro-service/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/micro-service/src/environments/environment.ts",
+                  "with": "apps/micro-service/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "micro-service:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/micro-service/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/micro-service"],
+          "options": {
+            "jestConfig": "apps/micro-service/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/nest"
+  },
+  "defaultProject": "micro-service"
+}
