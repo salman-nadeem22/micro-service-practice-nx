@@ -1,6 +1,56 @@
 {
   "version": 2,
   "projects": {
+    "http-app": {
+      "root": "apps/http-app",
+      "sourceRoot": "apps/http-app/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/http-app",
+            "main": "apps/http-app/src/main.ts",
+            "tsConfig": "apps/http-app/tsconfig.app.json",
+            "assets": ["apps/http-app/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/http-app/src/environments/environment.ts",
+                  "with": "apps/http-app/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "http-app:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/http-app/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/http-app"],
+          "options": {
+            "jestConfig": "apps/http-app/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "micro-service": {
       "root": "apps/micro-service",
       "sourceRoot": "apps/micro-service/src",
